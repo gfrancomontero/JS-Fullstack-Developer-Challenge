@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LastCallMedia Video App
 
-## Getting Started
+> **Note By Gonzalo**: This README file was formatted by cursor.
 
-First, run the development server:
+This project is a secure, reusable video delivery solution using Next.js, AWS S3, and Vercel. It meets the following requirements:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Video Hosting**: The video is securely stored in S3.
+- **Authentication**: Access is protected by a username/password and JWT-based validation.
+- **Reusable**: Can be applied to any AWS account and GitHub repo by updating credentials.
+- **CI/CD**: Automatically rebuilt on repository pushes via Vercel.
+- **Security Considerations**: Uses signed URLs, environment variables, and limited AWS permissions for cost efficiency and security.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Why These Choices?
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Next.js**: Easy setup, server-side rendering, and API routes for authentication and S3 integration.
+- **AWS S3**: Reliable, scalable, and inexpensive storage with signed URL support for secure video delivery.
+- **Vercel**: Automated builds and seamless integration with GitHub for low-maintenance deployment.
+- **JWT Authentication**: Lightweight and secure method for validating user sessions without a database.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Installation and Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repo and install dependencies:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   git clone https://github.com/gfrancomontero/JS-Fullstack-Developer-Challenge.git
+   cd JS-Fullstack-Developer-Challenge
+   npm install
+   ```
 
-## Deploy on Vercel
+2. Set environment variables in `.env.local`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```plaintext
+   JWT_=k3rfMvOGwc/ZGQQn2153ddEm1nympYMyN9kAXhitnLk=
+   AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY
+   AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Deploy to Vercel:
+   ```bash
+   vercel
+   ```
+
+---
+
+## Future Improvements
+
+1. **Stricter Token Validation**:
+
+   - In production, implement token expiration checks and a refresh mechanism.
+   - Store sensitive tokens in secure cookies instead of `localStorage`.
+
+2. **Database Integration**:
+
+   - Replace `users.json` with a robust database for user management.
+
+3. **CI/CD Enhancements**:
+
+   - Automate testing and deployments using GitHub Actions.
+
+4. **Cost Optimization**:
+
+   - Leverage AWS S3 storage classes and lifecycle policies for cost reduction.
+
+5. **Documentation**:
+
+   - Ensure all functions and components are well-documented for easier onboarding of new developers.
+
+6. **Error Handling**:
+   - Implement comprehensive error handling and logging for better debugging and user experience.
+
+---
+
+## Deliverables
+
+1. **Deployed URL**: Accessible at [lastcallmedia-video.vercel.app](https://lastcallmedia-video.vercel.app).
+2. **Username and Password**: Provided via secure communication.
+3. **Forked Repo**: [GitHub Repository](https://github.com/gfrancomontero/JS-Fullstack-Developer-Challenge).
