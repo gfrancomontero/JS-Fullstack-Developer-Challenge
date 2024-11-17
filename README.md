@@ -40,8 +40,14 @@ This project is a secure, reusable video delivery solution using Next.js, AWS S3
    ```
 
 3. Deploy to Vercel:
+
    ```bash
    vercel
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
    ```
 
 ---
