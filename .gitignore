@@ -32,3 +32,8 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+.DS_Store
+
+# Always remember to delete gitignore cache
+# $ git rm -r --cached .
