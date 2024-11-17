@@ -34,7 +34,7 @@ This project is a secure, reusable video delivery solution using Next.js, AWS S3
 2. Set environment variables in `.env.local`:
 
    ```plaintext
-   JWT_=k3rfMvOGwc/ZGQQn2153ddEm1nympYMyN9kAXhitnLk=
+   JWT_SECRET_KEY=k3rfMvOGwc/ZGQQn2153ddEm1nympYMyN9kAXhitnLk=
    AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY
    AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY
    ```

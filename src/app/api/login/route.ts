@@ -3,7 +3,7 @@ import path from 'path';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 
-const JWT_ = process.env.JWT_ as string;
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
 
 interface User {
   username: string;
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   // Generate a JWT token
-  const token = jwt.sign({ username }, JWT_, { expiresIn: '1h' });
+  const token = jwt.sign({ username }, JWT_SECRET_KEY, { expiresIn: '1h' });
 
   // Return the tkoen
   return new NextResponse(JSON.stringify({ token }), {
