@@ -9,55 +9,95 @@ interface UserData {
 
 export default function Video() {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
 
     if (!token) {
-      router.push('/login'); // Redirect to login if no token peresent
+      router.push('/login'); // Redirect to login if no token is present
       return;
     }
 
     const fetchData = async () => {
-      const res = await fetch('/api/protected', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      try {
+        // Validate the user token
+        const res = await fetch('/api/protected', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (res.ok) {
-        const data: { user: UserData } = await res.json();
-        setUserData(data.user); // set user data
-      } else {
-        localStorage.removeItem('token'); // Remove invalid token
-        router.push('/login'); // push back to login
+        if (res.ok) {
+          const data: { user: UserData } = await res.json();
+          setUserData(data.user);
+
+          // Fetch video URL securely
+          const videoRes = await fetch('/api/video', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (videoRes.ok) {
+            const videoData = await videoRes.json();
+            setVideoUrl(videoData.videoUrl); // Get signed video URL
+          } else {
+            console.error('Failed to fetch video URL');
+          }
+        } else {
+          localStorage.removeItem('token'); // Remove invalid token
+          router.push('/login');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        router.push('/login');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [router]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-700">Loading...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md p-8 bg-white">
-        <h1 className="text-3xl font-bold text-center text-black mb-6">View Video</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4">
+      <div className="max-w-lg bg-white p-8 rounded shadow-md">
+        <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">View Video</h1>
         {userData ? (
-          <div className="space-y-4">
-            <p className="text-lg text-center mb-6">
-              <span className="font-semibold text-[#fa]">Hi,</span> {userData.username} you are logged in.
+          <div>
+            <p className="mb-6 text-gray-600 text-center">
+              Hi, <span className="font-semibold text-[#fa]">{userData.username}</span>. Enjoy your video!
             </p>
-            <h3>HERE WE EILL PUT A PLACEHODLDER FOR THE VIDEO</h3>
+            {videoUrl ? (
+              <video
+                controls
+                src={videoUrl}
+                className="w-full rounded border border-gray-300"
+              />
+            ) : (
+              <p className="text-center text-red-500">Failed to load video.</p>
+            )}
           </div>
         ) : (
-          <p className="text-center text-gray-700">Loading user data...</p>
+          <p className="text-center text-gray-700">You are not authorized to view this content.</p>
         )}
         <button
           onClick={() => {
             localStorage.removeItem('token'); // Log out
             router.push('/');
           }}
-          className="w-full py-2 border border-gray-300 hover:bg-[#fa]"
+          className="mt-6 w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
           Log Out
         </button>
